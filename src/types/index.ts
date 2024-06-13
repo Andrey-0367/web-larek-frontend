@@ -72,7 +72,7 @@ export interface errorResponse {
     error: string;
 }
 
-export interface IApi {
+export interface IAppApi {
     getCardList(): Promise<ICard[] | errorResponse>;
     getCardItem(cardId: string): Promise<ICard | errorResponse>;
     postOrder(order: IOrder): Promise<successfulOrder | errorResponse>

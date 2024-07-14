@@ -1,48 +1,55 @@
-export interface ICard {
-    _id: string;
+export type CardCategory = 'софт-скил' | 'хард-скил' | 'другое' | 'дополнительное' | 'кнопка';
+
+export interface IItem {
+    title: string;
     description: string;
     image: string;
-    title: string;
-    category: string;
+    category: CardCategory;
     price: number;
+    id: string;
 }
 
-export interface ICardsData {
-    products: ICard[];
-    preview: string | null;
-    getCard(cardId: string): ICard;
+export interface IBasketItem {
+    id: string;
+    title: string;
+    price: number;
+    index: number
 }
 
-export interface IOrderContent {
-    total: number;
-    items: ICard[];
-}
-
-export interface IBasketData extends IOrderContent {
-    addCard(card: ICard): void;
-    deleteCard(cardId: string, payload: Function | null): void;
-    getCard(cardId: string): ICard;
-}
-
-export interface IOrder extends IOrderContent {
-    payment: string;
-    email: string;
-    phone: string;
-    address: string;
-    setIOrderInfo(orderData: IOrder): void;
-    checkOrderAddressValidation(data: Record<keyof TOrderBaseAddressInfo, string>): boolean;
-    checkOrderPhoneValidation(data: Record<keyof TOrderBasePhoneInfo, string>): boolean;
-}
-
-type TOrderBaseAddressInfo = Pick<IOrder, 'payment' | 'address'>;
-
-type TOrderBasePhoneInfo= Pick<IOrder, 'email' | 'phone'>;
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 export interface IModal {
     modal: HTMLElement;
     open(): void;
     close(): void;
 }
+
+export interface IAppState {
+    catalog: IItem[];
+    basket: IBasketItem[];
+    preview: string | null;
+    order: IOrder | null;
+    contact: IOrder | null;
+}
+
+export interface IOrderForm {
+    payment: string;
+    address: string;
+    email: string;
+    phone: string;
+}
+
+export interface IOrder extends IOrderForm {
+    items: string[];
+    total: number
+}
+
+export interface IOrderResult {
+    id: string;
+    total: number
+}
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 export interface IModalWithForm extends IModal {
     submitButton: HTMLButtonElement;
@@ -58,23 +65,12 @@ export interface IModalWithForm extends IModal {
     close(): void;
 }
 
-export interface ModalWithPlaced extends IModal {
-    open(): void
-    close(): void
-}
-
-export interface successfulOrder {
-    id: string;
-    total: number;
-}
-
 export interface errorResponse {
     error: string;
 }
 
-export interface IAppApi {
-    getCardList(): Promise<ICard[] | errorResponse>;
-    getCardItem(cardId: string): Promise<ICard | errorResponse>;
-    postOrder(order: IOrder): Promise<successfulOrder | errorResponse>
+export interface IApi {
+    baseUrl: string;
+    get<T>(uri: string): Promise<T | errorResponse>;
+    post<T>(uri: string, data: object, method?: ApiPostMethods): Promise<T | errorResponse>;
 }
-

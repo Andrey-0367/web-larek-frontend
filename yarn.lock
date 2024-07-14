@@ -1089,6 +1089,11 @@
 "@types/json-schema@*", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.11"
 
+"@types/lodash@^4.17.6":
+  version "4.17.6"
+  resolved "http://npm.prakticum-team.ru/@types/lodash/-/lodash-4.17.6.tgz"
+  integrity sha512-OpXEVoCKSS3lQqjx9GGGOapBeuW5eUboYHRlHP9urXPX25IKZ6AnP5ZRxtVf63iieUbsHxLn8NQ5Nlftc6yzAA==
+
 "@types/mime@*":
   version "3.0.1"
 
@@ -1818,6 +1823,11 @@ cloneable-readable@^1.0.0:
     inherits "^2.0.1"
     process-nextick-args "^2.0.0"
     readable-stream "^2.3.5"
+
+clsx@^2.1.1:
+  version "2.1.1"
+  resolved "http://npm.prakticum-team.ru/clsx/-/clsx-2.1.1.tgz"
+  integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
 
 cmd-shim@^5.0.0:
   version "5.0.0"
@@ -3048,6 +3058,8 @@ lodash.merge@^4.6.2:
 
 lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
+  resolved "http://npm.prakticum-team.ru/lodash/-/lodash-4.17.21.tgz"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@^4.0.0, log-symbols@^4.1.0:
   version "4.1.0"
@@ -4545,6 +4557,11 @@ validate-npm-package-name@^3.0.0:
   version "3.0.0"
   dependencies:
     builtins "^1.0.3"
+
+validate.js@^0.13.1:
+  version "0.13.1"
+  resolved "http://npm.prakticum-team.ru/validate.js/-/validate.js-0.13.1.tgz"
+  integrity sha512-PnFM3xiZ+kYmLyTiMgTYmU7ZHkjBZz2/+F0DaALc/uUtVzdCt1wAosvYJ5hFQi/hz8O4zb52FQhHZRC+uVkJ+g==
 
 vary@~1.1.2:
   version "1.1.2"

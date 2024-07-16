@@ -27,7 +27,6 @@ export class AppState extends Model<IAppState> {
         this.basketProducts = this.basketProducts.filter(item => item.id !== cardId);
         this.order.items = this.order.items.filter((item) => item !== cardId)
     }
-
     setCatalog(items: IItem[]) {
         this.catalog = items
         this.emitChanges('items:changed', {catalog: this.catalog});
@@ -48,6 +47,14 @@ export class AppState extends Model<IAppState> {
 
     getBasketProducts(): IItem[] {
         return this.basketProducts
+    }
+
+    inBasket(item: IItem) {
+        return this.basketProducts.includes(item)
+    }
+
+    clearBasket() {
+        this.basketProducts.length = 0;
     }
 
     setOrderField(field: keyof IOrderForm, value: string) {

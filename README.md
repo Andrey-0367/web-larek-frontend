@@ -115,6 +115,19 @@ export interface IOrderForm {
     С помощью этого промиса разрешен результат в формате JSON в случае получения ответа от сервера.
     В случае ошибки выводит её название или статус.
 
+#### Класс Model
+Базовая модель, чтобы можно было отличить ее от простых объектов с данными
+  export abstract class Model<T> {
+  constructor(data: Partial<T>, protected events: IEvents) {
+  Object.assign(this, data);
+  }
+
+  // Сообщить всем что модель поменялась
+  emitChanges(event: string, payload?: object) {
+  // Состав данных можно модифицировать
+  this.events.emit(event, payload ?? {});
+  }
+
 #### Класс EventEmitter
 Брокер событий позволяет отправлять события и подписываться на события, происходящие в системе. Класс используется в презентере для обработки событий и в слоях приложения для генерации событий.  
 - constructor()
@@ -146,7 +159,6 @@ export interface IOrderForm {
 - getBasketProducts(): список продуктов в корзине
 - setOrderField(field: keyof IOrderForm, value: string): обработка форм
 - validateOrder(data: string): валидация форм
-- а так-же геттеры для получения данных из полей класса
 
 ### Классы представления
 
@@ -186,6 +198,14 @@ constructor(container: HTMLElement, actions?: ICardActions)
 Методы:
 - set category({category}: CatalogItemCategory): определяет категорию продукта
 - set image(value: string): определяет изображение
+
+#### Класс Order
+Расширяет класс Form. Отвечает за ввод пользователем способа оплаты и адреса доставки
+constructor(container: HTMLFormElement, events: IEvents)
+
+#### Класс Contact
+Расширяет класс Form. Отвечает за ввод пользователем почты и телефона
+constructor(container: HTMLFormElement, events: IEvents)
 
 ### Слой Коммуникации
 

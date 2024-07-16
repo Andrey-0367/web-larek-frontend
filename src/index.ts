@@ -7,10 +7,11 @@ import {AppState,} from "./components/CardsData";
 import {Page} from "./components/Page";
 import {Card, CatalogItem} from "./components/Card";
 import {Modal} from "./components/common/Modal";
-import {Basket} from "./components/common/Basket";
-import {Contact, Order} from "./components/Order";
 import {IItem, IOrderForm} from "./types";
-import {Success} from "./components/common/Success";
+import {Basket} from "./components/Basket";
+import {Success} from "./components/Succes";
+import {ContactsForm, OrderForm} from "./components/Order";
+
 
 
 const events = new EventEmitter();
@@ -41,8 +42,8 @@ const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 
 // Переиспользуемые части интерфейса
 const basket = new Basket(cloneTemplate(basketTemplate), events);
-const order = new Order(cloneTemplate(orderTemplate), events);
-const contacts = new Contact(cloneTemplate(contactsTemplate), events);
+const order = new OrderForm(cloneTemplate(orderTemplate), events);
+const contacts = new ContactsForm(cloneTemplate(contactsTemplate), events);
 
 // Изменились элементы каталога
 events.on('items:changed', () => {
@@ -50,6 +51,7 @@ events.on('items:changed', () => {
         const card = new CatalogItem(cloneTemplate(cardCatalogTemplate), {
             onClick: () => events.emit('card:select', item),
         });
+
         return card.render({
             title: item.title,
             image: item.image,
@@ -67,6 +69,7 @@ events.on('contacts:submit', () => {
         .then((result) => {
             const success = new Success(cloneTemplate(successTemplate), {
                 onClick: () => {
+                    appData.clearBasket()
                     basket.products = [];
                     basket.total = 0;
                     page.counter = 0;
@@ -88,11 +91,22 @@ events.on('card:select', (item: IItem) => {
     appData.setPreview(item);
 });
 
+
 events.on('preview:changed', (item: IItem) => {
+    if (item) {
     const showItem = (item: IItem) => {
         const card = new CatalogItem(cloneTemplate(cardPreviewTemplate), {
-            onClick: () => events.emit('basket:select', item)
+            onClick: () => {
+                if (appData.inBasket(item)) {
+                    card.button = 'Продукт уже в корзине'
+                } else {
+                    card.button = 'В корзину'
+                    events.emit('basket:select', item)
+                }
+            }
         });
+
+        card.button = appData.inBasket(item) ? 'Продукт в корзине' : 'В корзину'
         modal.render({
             content: card.render({
                 title: item.title,
@@ -104,8 +118,6 @@ events.on('preview:changed', (item: IItem) => {
             })
         })
     };
-
-    if (item) {
         api.getCardItem(item.id)
             .then((result) => {
                 item.description = result.description;
@@ -131,12 +143,6 @@ events.on('basket:open', (item: IItem) => {
 
 //Добавить продукт в корзину
 events.on('basket:select', (item: IItem) => {
-    const basketHasItem = (appData.getBasketProducts().some(product => {
-        return product.id === item.id
-    }))
-    if (basketHasItem) {
-        return
-    }
     appData.addItem(item)
     page.counter = appData.getBasketProducts().length;
     basket.products = appData.getBasketProducts().map(item => {
@@ -161,7 +167,6 @@ events.on('card:delete', (item: IItem) => {
     })
     basket.total = appData.getTotal()
 })
-
 // Изменилось состояние валидации формы order
 events.on('formErrors:order', (errors: Partial<IOrderForm>) => {
     const {payment, address} = errors;

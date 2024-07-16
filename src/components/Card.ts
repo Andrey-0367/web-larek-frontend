@@ -17,17 +17,22 @@ export interface ICard<T> {
     index: number;
 }
 
+
 export class Card<T> extends Component<ICard<T>> {
-    protected _button?: HTMLButtonElement;
+    protected _button: HTMLButtonElement;
+    protected _title: HTMLElement;
+    protected _price: HTMLElement;
+    protected _description?: HTMLElement;
+    protected _index?: HTMLElement;
 
     constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
         super(container);
 
         this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
-        this._button = container.querySelector(`.basket__item-delete`);
         this._price = ensureElement<HTMLElement>(`.${blockName}__price`, container)
         this._description = container.querySelector(`.${blockName}__text`);
         this._index = container.querySelector(`.basket__item-index`);
+        this._button = container.querySelector('.card__button')
 
         if (actions?.onClick) {
             if (this._button) {
@@ -38,8 +43,6 @@ export class Card<T> extends Component<ICard<T>> {
         }
     }
 
-    protected _title: HTMLElement;
-
     get title(): string {
         return this._title.textContent || '';
     }
@@ -48,23 +51,22 @@ export class Card<T> extends Component<ICard<T>> {
         this.setText(this._title, value);
     }
 
-    protected _price: HTMLElement;
-
-    set price(value: number) {
-        if (value === null) {
-            this.setText(this._price, `Бесценно`)
-        } else {
-            this.setText(this._price, `${value}  синапсов`)
-        }
+    toggleButton(state: boolean) {
+        this.setDisabled(this._button, state);
     }
 
-    protected _description?: HTMLElement;
+    set button(value: string) {
+        this.setText(this._button, value)
+        if (value === 'В корзину') {
+            this.toggleButton(false);
+        } else {
+            this.toggleButton(true);
+        }
+    }
 
     set description(value: string) {
         this.setText(this._description, value);
     }
-
-    protected _index?: HTMLElement;
 
     set index(value: number) {
         this.setText(this._index, value);
@@ -77,6 +79,14 @@ export class Card<T> extends Component<ICard<T>> {
     set id(value: string) {
         this.container.dataset.id = value;
     }
+
+    set price(value: number) {
+        this.setText(this._price, value ? `${value}  синапсов` : `Бесценно`)
+        if (this._button) {
+            this._button.disabled = !value
+        }
+    }
+
 }
 
 

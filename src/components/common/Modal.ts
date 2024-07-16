@@ -25,13 +25,27 @@ export class Modal extends Component<IModalData> {
         this._content.replaceChildren(value);
     }
 
+    // создаем метод для переключения модального окна, чтобы не передавать селектор и контейнер каждый раз
+    // сразу по умолчанию указываем `true`, чтобы лишний раз не передавать при открытии
+    _toggleModal(state: boolean = true) {
+        this.toggleClass(this.container, 'modal_active', state);
+    }
+    // Обработчик в виде стрелочного метода, чтобы не терять контекст `this`
+    _handleEscape = (evt: KeyboardEvent) => {
+        if (evt.key === 'Escape') {
+            this.close();
+        }
+    };
+
     open() {
-        this.container.classList.add('modal_active');
+        this._toggleModal();
+        document.addEventListener('keydown', this._handleEscape);
         this.events.emit('modal:open');
     }
 
     close() {
-        this.container.classList.remove('modal_active');
+        this._toggleModal(false);
+        document.removeEventListener('keydown', this._handleEscape);
         this.content = null;
         this.events.emit('modal:close');
     }

@@ -5,7 +5,6 @@ import {IItem, IOrder, IOrderResult} from "../types";
 export interface IAppApi {
     getCardList: () => Promise<IItem[]>;
     getCardItem: (id: string) => Promise<IItem>;
-    orderCard: (order: IOrder) => Promise<IOrderResult>;
 }
 
 export class AppApi extends Api implements IAppApi {
@@ -38,10 +37,6 @@ export class AppApi extends Api implements IAppApi {
         return this.post('/order', order).then(
             (data: IOrderResult) => data
         );
-    }
-
-    orderCard(order: IOrder): Promise<IOrderResult> {
-        return Promise.resolve(undefined);
     }
 }
 

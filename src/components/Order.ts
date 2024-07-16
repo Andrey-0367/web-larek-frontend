@@ -3,7 +3,7 @@ import {IOrder} from "../types";
 import {IEvents} from "./base/events";
 
 
-export class Order extends Form<IOrder> {
+export class OrderForm extends Form<IOrder> {
     protected _buttonCard?: HTMLButtonElement;
     protected _buttonCash?: HTMLButtonElement;
     protected _button: HTMLButtonElement;
@@ -13,7 +13,6 @@ export class Order extends Form<IOrder> {
 
         this._buttonCard = container.elements.namedItem('card') as HTMLButtonElement;
         this._buttonCash = container.elements.namedItem('cash') as HTMLButtonElement;
-        this._button = container.querySelector('order__button');
 
         if (this._buttonCard) {
             this._buttonCard.addEventListener('click', () => {
@@ -39,19 +38,11 @@ export class Order extends Form<IOrder> {
 }
 
 
-export class Contact extends Form<any> {
-    protected _button: HTMLButtonElement;
+export class ContactsForm extends Form<IOrder> {
+
 
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
-
-        this._button = container.querySelector('button');
-
-        if (this._button) {
-            this._button.addEventListener('click', () => {
-                events.emit('contact:submit');
-            });
-        }
     }
 
     set phone(value: string) {

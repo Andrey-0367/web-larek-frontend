@@ -1,6 +1,6 @@
-import {Component} from "../base/Component";
-import {ensureElement} from "../../utils/utils";
-import {EventEmitter} from "../base/events";
+import {Component} from "./base/Component";
+import {ensureElement} from "../utils/utils";
+
 
 interface ISuccess {
     total: number;
@@ -11,8 +11,8 @@ interface ISuccessActions {
 }
 
 export class Success extends Component<ISuccess> {
-      protected _button: HTMLElement;
-      protected _total: HTMLElement;
+    protected _button: HTMLElement;
+    protected _total: HTMLElement;
 
     constructor(container: HTMLElement, actions: ISuccessActions) {
         super(container);
@@ -24,7 +24,7 @@ export class Success extends Component<ISuccess> {
             this._button.addEventListener('click', actions.onClick);
         }
     }
-        set total(total: number) {
+    set total(total: number) {
         this.setText(this._total, `Списано ${total}  синапсов`)
     }
 }

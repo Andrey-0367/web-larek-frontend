@@ -6,6 +6,7 @@ export interface IItem {
     image: string;
     category: CardCategory;
     price: number;
+    index: number;
     id: string;
 }
 

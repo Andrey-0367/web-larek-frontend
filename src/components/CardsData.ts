@@ -11,12 +11,13 @@ export class AppState extends Model<IAppState> {
         address: '',
         email: '',
         phone: '',
-        total: null,
+        total: 0,
         items: []
     }
 
     preview: string | null;
     formErrors: FormErrors = {};
+    index: number;
 
     addItem(item: IItem) {
         this.basketProducts = [item, ...this.basketProducts];
@@ -37,13 +38,22 @@ export class AppState extends Model<IAppState> {
         this.emitChanges('preview:changed', item);
     }
 
-    getTotal() {
+    getTotal()  {
         let total = 0
         for (const product of this.basketProducts) {
             total += product.price;
         }
         return total
     }
+
+
+    getIndex(value: IItem, array: IItem[]) {
+        function isWantedGuest(element: IItem) {
+            return element === value
+        }
+        return array.findIndex(isWantedGuest) + 1
+    }
+
 
     getBasketProducts(): IItem[] {
         return this.basketProducts
@@ -75,6 +85,9 @@ export class AppState extends Model<IAppState> {
 
     validateOrder(data: string) {
         const errors: typeof this.formErrors = {};
+        if (!this.order.payment) {
+            errors.payment = 'Необходимо указать способ оплаты';
+        }
         if (!this.order.address) {
             errors.address = 'Необходимо указать адрес';
         }

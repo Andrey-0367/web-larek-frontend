@@ -98,7 +98,7 @@ events.on('preview:changed', (item: IItem) => {
         const card = new CatalogItem(cloneTemplate(cardPreviewTemplate), {
             onClick: () => {
                 if (appData.inBasket(item)) {
-                    card.button = 'Продукт уже в корзине'
+                    card.button = 'Продукт в корзине'
                 } else {
                     card.button = 'В корзину'
                     events.emit('basket:select', item)
@@ -141,6 +141,7 @@ events.on('basket:open', (item: IItem) => {
 })
 
 
+
 //Добавить продукт в корзину
 events.on('basket:select', (item: IItem) => {
     appData.addItem(item)
@@ -149,6 +150,7 @@ events.on('basket:select', (item: IItem) => {
         const card = new Card('card', cloneTemplate(cardBasketTemplate), {
             onClick: () => events.emit('card:delete', item)
         });
+        card.index = appData.getIndex(item, appData.getBasketProducts());
         return card.render(item);
     });
     basket.total = appData.getTotal();
@@ -163,6 +165,7 @@ events.on('card:delete', (item: IItem) => {
         const card = new Card('card', cloneTemplate(cardBasketTemplate), {
             onClick: () => events.emit('card:delete', item)
         });
+        card.index = appData.getIndex(item, appData.getBasketProducts());
         return card.render(item);
     })
     basket.total = appData.getTotal()

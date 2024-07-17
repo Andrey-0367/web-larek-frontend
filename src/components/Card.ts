@@ -82,11 +82,10 @@ export class Card<T> extends Component<ICard<T>> {
 
     set price(value: number) {
         this.setText(this._price, value ? `${value}  синапсов` : `Бесценно`)
-        if (this._button) {
-            this._button.disabled = !value
+        if (typeof value !== 'number') {
+            this.setDisabled(this._button, true)
         }
     }
-
 }
 
 

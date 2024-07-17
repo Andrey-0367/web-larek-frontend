@@ -37,19 +37,6 @@ export class OrderForm extends Form<IOrder> {
     set address(value: string) {
         (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
-
-    // toggleOrderButton(state: boolean) {
-    //     this.setDisabled(this._button, state);
-    // }
-    //
-    // orderPayment(payment: any) {
-    //     console.log(payment, 33333333333333)
-    //     if (!payment) {
-    //         this.toggleOrderButton(false);
-    //     } else {
-    //         this.toggleOrderButton(true);
-    //     }
-    // }
 }
 
 

@@ -140,26 +140,7 @@ events.on('basket:open', (item: IItem) => {
     });
 })
 
-
-
-//Добавить продукт в корзину
-events.on('basket:select', (item: IItem) => {
-    appData.addItem(item)
-    page.counter = appData.getBasketProducts().length;
-    basket.products = appData.getBasketProducts().map(item => {
-        const card = new Card('card', cloneTemplate(cardBasketTemplate), {
-            onClick: () => events.emit('card:delete', item)
-        });
-        card.index = appData.getIndex(item, appData.getBasketProducts());
-        return card.render(item);
-    });
-    basket.total = appData.getTotal();
-})
-
-
-//Удалить продукт из корзины
-events.on('card:delete', (item: IItem) => {
-    appData.deleteItem(item.id)
+function basketChange() {
     page.counter = appData.getBasketProducts().length;
     basket.products = appData.getBasketProducts().map(item => {
         const card = new Card('card', cloneTemplate(cardBasketTemplate), {
@@ -169,6 +150,18 @@ events.on('card:delete', (item: IItem) => {
         return card.render(item);
     })
     basket.total = appData.getTotal()
+}
+
+//Добавить продукт в корзину
+events.on('basket:select', (item: IItem) => {
+    appData.addItem(item)
+    basketChange()
+})
+
+//Удалить продукт из корзины
+events.on('card:delete', (item: IItem) => {
+    appData.deleteItem(item.id)
+    basketChange()
 })
 // Изменилось состояние валидации формы order
 events.on('formErrors:order', (errors: Partial<IOrderForm>) => {
